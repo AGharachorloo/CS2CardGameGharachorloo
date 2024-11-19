@@ -42,6 +42,4 @@ public class Player {
         return name + " has " + points + " points\n" + name + "'s cards: " + hand;
     }
 
-    public static void main(String[] args) {
-    }
 }

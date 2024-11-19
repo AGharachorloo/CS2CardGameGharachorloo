@@ -38,6 +38,4 @@ public class Card {
         return rank + " of " + suit;
     }
 
-    public static void main(String[] args) {
-    }
 }
