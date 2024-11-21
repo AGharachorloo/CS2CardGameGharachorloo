@@ -3,11 +3,13 @@ public class Player {
     private ArrayList<Card> hand;
     private int points;
     private String name;
+    private boolean stands;
 
     public Player(String name) {
         this.name = name;
         points = 0;
         hand = new ArrayList<Card>();
+        stands = false;
     }
     public Player(String name, ArrayList<Card> hand) {
         this.name = name;
@@ -16,6 +18,7 @@ public class Player {
         for (int i = 0; i < size; i++) {
             this.hand.add(hand.get(i));
         }
+        stands = false;
     }
 
     public ArrayList<Card> getHand() {
@@ -28,6 +31,14 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public boolean getIfStood() {
+        return stands;
+    }
+
+    public void setStands(boolean stands) {
+        this.stands = stands;
     }
 
     public void addPoints(int newPoints) {

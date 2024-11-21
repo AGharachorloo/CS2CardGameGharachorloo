@@ -41,6 +41,4 @@ public class Deck {
             deck.set(i, temp);
         }
     }
-
-
 }
