@@ -4,12 +4,14 @@ public class Player {
     private int points;
     private String name;
     private boolean stands;
+    private boolean hasLost;
 
     public Player(String name) {
         this.name = name;
         points = 0;
         hand = new ArrayList<Card>();
         stands = false;
+        hasLost = false;
     }
     public Player(String name, ArrayList<Card> hand) {
         this.name = name;
@@ -19,6 +21,15 @@ public class Player {
             this.hand.add(hand.get(i));
         }
         stands = false;
+        hasLost = false;
+    }
+
+    public boolean HasLost() {
+        return hasLost;
+    }
+
+    public void setHasLost(boolean hasLost) {
+        this.hasLost = hasLost;
     }
 
     public ArrayList<Card> getHand() {
