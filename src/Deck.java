@@ -24,6 +24,7 @@ public class Deck {
     }
 
     public Card deal() {
+        // Check if there are cards remaining, otherwise remove a card and return that card.
         if (cardsLeft == 0) {
             return null;
         }
@@ -31,6 +32,7 @@ public class Deck {
         return deck.get(cardsLeft - 1);
     }
     public void shuffle() {
+        // take the top card of the deck and put it in a random spot below it.
         cardsLeft = deck.size();
         int randomIndex;
         Card temp;
