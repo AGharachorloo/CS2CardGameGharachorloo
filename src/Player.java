@@ -8,7 +8,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        points = 0;
+        points = 1000;
         hand = new ArrayList<Card>();
         stands = false;
         hasLost = false;
@@ -22,9 +22,10 @@ public class Player {
         }
         stands = false;
         hasLost = false;
+        points = 1000;
     }
 
-    public boolean HasLost() {
+    public boolean isHasLost() {
         return hasLost;
     }
 

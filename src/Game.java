@@ -38,13 +38,13 @@ public class Game {
         if (playerHasLost(playerIndex)) {
             System.out.println(players.get(playerIndex).getName() + " has busted!");
         }
-        else {
-            System.out.println(". Their new hand: " + players.get(playerIndex).getHand());
-        }
     }
 
     public void dealHouse() {
         house.addCard(deck.deal());
+        if (houseHasLost()) {
+            System.out.println("The dealer has busted!");
+        }
     }
 
     public void printHands() {
@@ -60,15 +60,15 @@ public class Game {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < numPlayers; j++) {
                 dealPlayer(j);
-                dealHouse();
             }
+            dealHouse();
             printHands();
         }
     }
 
     public void playerTurn(int playerIndex) {
         Player currentPlayer = players.get(playerIndex);
-        if (currentPlayer.HasLost()) {
+        if (currentPlayer.isHasLost()) {
             return;
         }
 
@@ -80,6 +80,10 @@ public class Game {
             result = input.nextLine();
             if (result.toLowerCase().equals("hit")) {
                 dealPlayer(playerIndex);
+                if (!playerHasLost(playerIndex)) {
+                    System.out.println("Their new hand: " + players.get(playerIndex).getHand());
+                    break;
+                }
                 break;
             }
             else if (result.toLowerCase().equals("stand")) {
@@ -97,9 +101,15 @@ public class Game {
         int sum = getHouseSum();
         if (sum >= 17) {
             house.setStands(true);
+            System.out.println("House has stood.");
         }
         else {
+            System.out.println("Dealer hits...");
             dealHouse();
+            if (!house.isHasLost()) {
+            System.out.println("The Dealer got a " + house.getHand().getLast());
+            System.out.println("Their new hand: " + house.getHand());
+            }
         }
     }
 
@@ -126,13 +136,46 @@ public class Game {
         }
         return false;
     }
+    public boolean houseHasLost() {
+        int sum = getHouseSum();
+        if (sum > 21) {
+            house.setHasLost(true);
+            return true;
+        }
+        return false;
+    }
 
-    public void initializeGame() {
+    public void playGame() {
         initializePlayers();
         dealHands();
         for (int i = 0; i < numPlayers; i++) {
-            while (!players.get(i).getIfStood()) {
+            while (!players.get(i).getIfStood() && !players.get(i).isHasLost()) {
                 playerTurn(i);
+            }
+            printHands();
+        }
+        System.out.println("The Dealer reveals hand..." + house.getHand());
+        while(!house.getIfStood()) {
+            houseTurn();
+        }
+        findWinners();
+    }
+
+    public void findWinners() {
+        int houseSum = getHouseSum();
+        int playerSum;
+        for (int i = 0; i < numPlayers; i++) {
+            if (!players.get(i).isHasLost()) {
+                playerSum = getPlayerSum(i);
+                if (playerSum > houseSum && !(houseSum > 21)) {
+                    System.out.println(players.get(i).getName() + " has won against the house!");
+                }
+                else {
+                    System.out.println(players.get(i).getName() + " has lost to the house.");
+                }
+            }
+            else {
+                System.out.println(players.get(i).getName() + " has lost to the house.");
             }
         }
     }
@@ -144,7 +187,7 @@ public class Game {
 
         Deck deck = new Deck(ranks, suits, values);
         Game game = new Game(deck);
-        game.initializeGame();
+        game.playGame();
 
     }
 }
