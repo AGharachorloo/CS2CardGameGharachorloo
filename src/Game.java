@@ -1,14 +1,24 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Game {
-    private Deck deck;
+    private final static int WELCOME_SCREEN = 0;
+    private final static int PLAYING_GAME = 1;
+    private final static int RESULTS = 2;
     private ArrayList<Player> players;
     private Player house;
     private Scanner input;
     private int numPlayers;
+    private GameView front;
+    private Deck deck;
+    private int status;
 
-    public Game(Deck deck) {
-        this.deck = deck;
+    public Game() {
+        status = WELCOME_SCREEN;
+        front = new GameView(this);
+        String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
+        String[] ranks = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+        int[] values = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10};
+        deck = new Deck(suits, ranks, values, front);
         players = new ArrayList<Player>();
         house = new Player("House");
         input = new Scanner(System.in);
@@ -17,11 +27,12 @@ public class Game {
 
     public void printInstructions() {
         // Print the instructions to the game.
+        front.repaint();
         System.out.println("Welcome to Black Jack. The goal of the game is to get as close to 21 or hit 21" +
                 " without going over");
         System.out.println("In order to win, your cards must be higher than or equal to that of the dealer.");
         System.out.println("You will be dealt 2 cards, only being able to see one of the dealers two cards.");
-        System.out.println("Number cards are worth their number value, faces are worth 10, and ace's are worth 11.");
+        System.out.println("Number cards are worth their number value, faces are worth 10, and ace's are worth 1.");
         System.out.println("When it is your turn you can either hit or stand");
         System.out.println("Hit: ask for another card to be dealt to you");
         System.out.println("Stand: ask to stop recieving cards and hold at the hand you currently have");
@@ -31,6 +42,10 @@ public class Game {
         System.out.println("If the house has a total of 17 or above, they will be forced to stand");
         System.out.println("It is important to note that the game is not played against the other players but rather" +
                 " against the house.");
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public void initializePlayers() {
@@ -188,6 +203,7 @@ public class Game {
         // Initialize the game (print instructions, initialize players, deal hands)
         printInstructions();
         initializePlayers();
+        status = PLAYING_GAME;
         dealHands();
         // For each player, as long as they haven't stood and haven't lost, have them play a turn till one is true.
         // When their round is over print the new hands of the players
@@ -204,6 +220,7 @@ public class Game {
         }
         // Figure out which players beat, tied, or lost to the house
         findWinners();
+        status = RESULTS;
     }
 
     public void findWinners() {
@@ -219,9 +236,12 @@ public class Game {
                 }
                 else if (playerSum == houseSum) {
                     System.out.println(players.get(i).getName() + " has tied against the house!");
+                    players.get(i).setHasLost(true);
+                    players.get(i).setHasPushed(true);
                 }
                 else {
                     System.out.println(players.get(i).getName() + " has lost to the house.");
+                    players.get(i).setHasLost(true);
                 }
             }
             // If they have already lost, print the loss due to bust.
@@ -232,14 +252,8 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        // Create suits, ranks, and values for the cards in the deck
-        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
-        String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
-        int[] values = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
-
-        // Initialize the deck and game instances
-        Deck deck = new Deck(ranks, suits, values);
-        Game game = new Game(deck);
+        // Initialize the game instance
+        Game game = new Game();
         // Play the game!
         game.playGame();
 
