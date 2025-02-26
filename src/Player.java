@@ -5,7 +5,7 @@ public class Player {
     private String name;
     private boolean stands;
     private boolean hasLost;
-    private boolean hasPushed;
+    private String result;
 
     public Player(String name) {
         this.name = name;
@@ -13,7 +13,6 @@ public class Player {
         hand = new ArrayList<Card>();
         stands = false;
         hasLost = false;
-        hasPushed = false;
     }
     public Player(String name, ArrayList<Card> hand) {
         this.name = name;
@@ -25,14 +24,15 @@ public class Player {
         stands = false;
         hasLost = false;
         points = 1000;
+        result = "";
     }
 
-    public boolean isHasPushed() {
-        return hasPushed;
+    public String getResult() {
+        return result;
     }
 
-    public void setHasPushed(boolean hasPushed) {
-        this.hasPushed = hasPushed;
+    public void setResult(String result) {
+        this.result = result;
     }
 
     public boolean isHasLost() {

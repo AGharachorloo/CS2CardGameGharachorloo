@@ -18,10 +18,11 @@ public class Deck {
             cardImages[i] = new ImageIcon("Resources/" + (i+1) + ".png").getImage();
         }
         int cardNumber = 0;
-        for (int i = 0; i < suit.length; i++) {
-            for (int j = 0; j < rank.length; j++) {
-                currentCard = new Card(rank[j], suit[i], value[j], cardImages[cardNumber], front);
+        for (int i = 0; i < rank.length; i++) {
+            for (int j = 0; j < suit.length; j++) {
+                currentCard = new Card(rank[i], suit[j], value[i], cardImages[cardNumber], front);
                 deck.add(currentCard);
+                System.out.println("Card created: " + currentCard + " Card value " + currentCard.getValue() + " Card rank: " + currentCard.getRank() + " Card suit " + currentCard.getSuit());
                 cardNumber++;
             }
         }
